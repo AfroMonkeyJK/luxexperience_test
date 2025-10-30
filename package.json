@@ -1,0 +1,56 @@
+{
+  "name": "luxexperience-test-automation",
+  "version": "1.0.0",
+  "description": "Cross-browser test automation for LuxExperience technical test using Playwright + Cucumber BDD",
+  "type": "module",
+  "main": "test-runner.js",
+  "scripts": {
+    "test": "node test-runner.js production",
+    "test-wip": "node test-runner.js local --tags @wip",
+    "test-report": "node test-runner.js production --report",
+    "test-local": "node test-runner.js local",
+    "test-local-report": "node test-runner.js local --report",
+    "test-staging": "node test-runner.js staging",
+    "test-staging-report": "node test-runner.js staging --report",
+    "test-smoke": "node test-runner.js production --tags @smoke",
+    "clean-artifacts": "node util/clean-artifacts.js",
+    "clean-videos": "node util/clean-artifacts.js --videos-only",
+    "clean-screenshots": "node util/clean-artifacts.js --screenshots-only",
+    "clean-reports": "node util/clean-reports.js",
+    "clean-reports-json": "node util/clean-reports.js json",
+    "clean-reports-html": "node util/clean-reports.js html",
+    "generate-report": "node util/report-generator.js",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
+  },
+  "keywords": [
+    "playwright",
+    "cucumber",
+    "bdd",
+    "testing",
+    "automation",
+    "qa",
+    "e2e",
+    "cross-browser"
+  ],
+  "author": "Andreu",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.3.1",
+    "@eslint/js": "^9.38.0",
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.9.2",
+    "dotenv": "^16.6.1",
+    "eslint": "^9.0.0",
+    "multiple-cucumber-html-reporter": "^3.9.3",
+    "winston": "^3.18.3"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "csv-writer": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
