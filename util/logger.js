@@ -47,8 +47,8 @@ const logger = createLogger({
   ],
 });
 
-logger.success = (message) => logger.info(`✅ ${message}`);
-logger.failure = (message) => logger.error(`❌ ${message}`);
+logger.success = (message) => logger.info(` ${message}`);
+logger.failure = (message) => logger.error(` ${message}`);
 logger.step = (message) => logger.info(`🔹 ${message}`);
 
 export default logger;
