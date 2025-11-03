@@ -1,55 +1,68 @@
 import { Given, When, Then } from "@cucumber/cucumber";
-import { expect } from "@playwright/test";
 import { ConsolePage } from "../pages/consolePage.js";
 import envConfig from "../util/environment-config.js";
 import logger from "../util/logger.js";
-import { timeouts } from '../util/timeout.js';
+import { timeouts } from "../util/timeout.js";
 
-let consolePage;
+Given(
+  "the browser captures console messages",
+  { timeout: timeouts.long },
+  async function () {
+    this.consolePage = new ConsolePage(this.page);
+    this.consolePage.setupConsoleCapture();
+  }
+);
 
-Given('the browser captures console messages', {timeout: timeouts.long }, async function () {
-  consolePage = new ConsolePage(this.page);
-  consolePage.setupConsoleCapture();
-});
+When(
+  "the user navigates to the home page",
+  { timeout: timeouts.medium },
+  async function () {
+    const config = envConfig.getConfig();
+    const url = config.baseUrl;
 
-When('the user navigates to the home page', {timeout: timeouts.medium}, async function () {
-  const config = envConfig.getConfig();
-  const url = config.baseUrl;
+    await this.consolePage.navigateToPage(url);
+    logger.success(`✅ Navigated to home page`);
+  }
+);
 
-  await consolePage.navigateToPage(url);
-  logger.success(`✅ Navigated to home page`);
-});
+When(
+  "the user navigates to the about page",
+  { timeout: timeouts.medium },
+  async function () {
+    const config = envConfig.getConfig();
+    const url = `${config.baseUrl}about.html`;
 
-When("the user navigates to the about page", {timeout: timeouts.medium}, async function () {
-  const config = envConfig.getConfig();
-  const url = `${config.baseUrl}about.html`;
+    await this.consolePage.navigateToPage(url);
+    logger.success(`✅ Navigated to about page`);
+  }
+);
 
-  await consolePage.navigateToPage(url);
-  logger.success(`✅ Navigated to about page`);
-});
+When(
+  "the user navigates to the {string} page",
+  { timeout: timeouts.medium },
+  async function (pageName) {
+    const config = envConfig.getConfig();
 
-When("the user navigates to the {string} page", {timeout: timeouts.medium}, async function (pageName) {
-  const config = envConfig.getConfig();
+    const pageMap = {
+      home: config.baseUrl,
+      products: `${config.baseUrl}products.html`,
+      contact: `${config.baseUrl}contact.html`,
+      about: `${config.baseUrl}about.html`,
+      login: `${config.baseUrl}login.html`,
+    };
 
-  const pageMap = {
-    home: config.baseUrl,
-    products: `${config.baseUrl}products.html`,
-    contact: `${config.baseUrl}contact.html`,
-    about: `${config.baseUrl}about.html`,
-    login: `${config.baseUrl}login.html`,
-  };
-
-  const url = pageMap[pageName.toLowerCase()] || config.baseUrl;
-  await consolePage.navigateToPage(url);
-  logger.success(`✅ Navigated to ${pageName} page`);
-});
+    const url = pageMap[pageName.toLowerCase()] || config.baseUrl;
+    await this.consolePage.navigateToPage(url);
+    logger.success(`✅ Navigated to ${pageName} page`);
+  }
+);
 
 Then("the page should have no console errors", async function () {
-  const errorCount = consolePage.getConsoleErrorsCount();
+  const errorCount = this.consolePage.getConsoleErrorsCount();
   logger.info(`🔍 Checking for console errors... Found: ${errorCount}`);
 
   if (errorCount > 0) {
-    consolePage.logConsoleErrors();
+    this.consolePage.logConsoleErrors();
   }
 
   expect(errorCount, `Expected no console errors but found ${errorCount}`).toBe(
@@ -59,7 +72,7 @@ Then("the page should have no console errors", async function () {
 });
 
 Then("the page should have console errors", async function () {
-  const errorCount = consolePage.getConsoleErrorsCount();
+  const errorCount = this.consolePage.getConsoleErrorsCount();
   logger.info(`🔍 Checking for console errors... Found: ${errorCount}`);
 
   expect(errorCount, "Expected console errors to be present").toBeGreaterThan(
@@ -67,19 +80,22 @@ Then("the page should have console errors", async function () {
   );
 
   logger.info(`✅ Console errors detected as expected (${errorCount})`);
-  consolePage.logConsoleErrors();
+  this.consolePage.logConsoleErrors();
 });
 
 Then(
   "the console errors should contain {string} or {string}",
+  { timeout: timeouts.long },
   async function (keyword1, keyword2) {
-    const hasKeyword1 = consolePage.hasErrorContaining(keyword1);
-    const hasKeyword2 = consolePage.hasErrorContaining(keyword2);
+    const hasKeyword1 = this.consolePage.hasErrorContaining(keyword1);
+    const hasKeyword2 = this.consolePage.hasErrorContaining(keyword2);
     const hasKeyword = hasKeyword1 || hasKeyword2;
 
     expect(
       hasKeyword,
-      `Expected console errors to contain "${keyword1}" or "${keyword2}"`
+      `Expected console errors to contain "${keyword1}" or "${keyword2}". Found: ${consolePage
+        .getConsoleErrors()
+        .join(", ")}`
     ).toBe(true);
     logger.success(`✅ Console error contains expected keyword`);
   }

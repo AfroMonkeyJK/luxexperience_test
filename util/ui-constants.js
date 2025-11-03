@@ -1,46 +1,51 @@
-export const mimeTypes = {
-  png: "image/png",
-  webm: "video/webm",
-  json: "application/json",
+/**
+ * UI Constants - ONLY for user-facing text, labels, and attributes
+ * Technical selectors and IDs should go in selectors.js
+ */
+
+export const buttons = {};
+
+export const attributes = {
+  dataDisabled: "data-disabled",
+  input: "input",
+  name: "name",
+  id: "id",
+  role: "role",
+  placeholder: "placeholder",
+  ariaLabel: "aria-label",
+  password: "password",
+  type: "type",
 };
 
-export const browserArgs = {
-  ci: [
-    "--disable-dev-shm-usage",
-    "--no-sandbox",
-    "--disable-setuid-sandbox",
-    "--disable-gpu",
-  ],
+export const inputAttributes = {
+  submitType: { attribute: "type", value: "submit" },
+  signInValue: { attribute: "value", value: "Sign in" },
 };
 
-export const fileExtensions = {
-  png: ".png",
-  webm: ".webm",
-  json: ".json",
+export const testStatus = {
+  passed: "PASSED",
+  failed: "FAILED",
+  skipped: "SKIPPED",
+  pending: "PENDING",
+  undefined: "UNDEFINED",
+  ambiguous: "AMBIGUOUS",
 };
 
-export const testPaths = {
-  videos: "test-results/videos/",
-  screenshots: "test-results/screenshots/",
-  reports: "reports/",
+export const testHelpers = {
+  isTestFailure: (status) => status === testStatus.failed,
+  isTestSuccess: (status) => status === testStatus.passed,
+  isTestSkipped: (status) =>
+    [testStatus.skipped, testStatus.pending, testStatus.undefined].includes(
+      status
+    ),
 };
 
-export const technicalConstants = {
-  keyboard: {
-    enter: "Enter",
-    escape: "Escape",
-    tab: "Tab",
-    ctrlA: "Control+A",
-    backspace: "Backspace",
-  },
-  sensitivePatterns: [
-    "password",
-    "pass",
-    "pwd",
-    "secret",
-    "token",
-    "key",
-    "credential",
-    "auth",
-  ],
+export const uiConstants = {
+  buttons,
+  attributes,
+  inputAttributes,
+  testStatus,
+  testHelpers,
 };
+
+export default uiConstants;
