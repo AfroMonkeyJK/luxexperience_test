@@ -1,0 +1,10 @@
+{
+  "default": {
+    "formatOptions": {
+      "snippetInterface": "async-await"
+    },
+    "paths": ["features/**/*.feature"],
+    "import": ["hooks/hooks.js", "step-definitions/**/*.js"],
+    "format": ["summary"]
+  }
+}
