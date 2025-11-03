@@ -119,8 +119,6 @@ export const technicalConstants = {
   mimeTypes,
   fileExtensions,
   browserArgs,
-  viewport,
-  encoding,
   testPaths,
   keyboard,
   sensitivePatterns,
