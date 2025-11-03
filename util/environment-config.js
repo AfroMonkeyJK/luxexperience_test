@@ -1,6 +1,16 @@
 import dotenv from "dotenv";
 import logger from "./logger.js";
-dotenv.config();
+
+const result = dotenv.config();
+if (result.error && !process.env.CI) {
+  logger.error("❌ .env file not found!");
+  logger.error(
+    "Please create a .env file with LOGIN_USERNAME and LOGIN_PASSWORD"
+  );
+  throw new Error(
+    "Missing .env file. Create it using .env.example as template"
+  );
+}
 
 /**
  * Environment constants for FashionHub
@@ -34,7 +44,7 @@ const envConfig = {
     },
     [Environments.PRODUCTION]: {
       name: "Production",
-      emoji: "🌍",
+      emoji: "🌐",
       baseUrl: "https://pocketaces2.github.io/fashionhub/",
     },
   },
@@ -42,6 +52,30 @@ const envConfig = {
   current: (
     process.env.ENV_VARS?.toLowerCase() || Environments.PRODUCTION
   ).trim(),
+
+  get credentials() {
+    const username = process.env.LOGIN_USERNAME;
+    const password = process.env.LOGIN_PASSWORD;
+    if (!username) {
+      logger.error("❌ LOGIN_USERNAME is not set!");
+      logger.error("Add LOGIN_USERNAME to your .env file or GitHub Secrets");
+      throw new Error("Missing LOGIN_USERNAME environment variable");
+    }
+
+    if (!password) {
+      logger.error("❌ LOGIN_PASSWORD is not set!");
+      logger.error("Add LOGIN_PASSWORD to your .env file or GitHub Secrets");
+      throw new Error("Missing LOGIN_PASSWORD environment variable");
+    }
+    logger.debug(
+      `Credentials loaded (username: ${username.substring(0, 2)}***)`
+    );
+
+    return {
+      username,
+      password,
+    };
+  },
 
   get prefix() {
     const selectedPrefix =
@@ -102,6 +136,7 @@ const envConfig = {
       prefix: this.environments[env],
       baseUrl: info.baseUrl,
       info: info,
+      credentials: this.credentials,
     };
   },
 };
