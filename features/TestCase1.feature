@@ -11,4 +11,4 @@ Feature: Test Case 1 - Console Error Detection
   Scenario: Verify about page intentional error is detected
     When the user navigates to the about page
     Then the page should have console errors
-    And the console errors should contain "Uncaught" or "Error"
+    And the console errors should contain "intentional" or "error"

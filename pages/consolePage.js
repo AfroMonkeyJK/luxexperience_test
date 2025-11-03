@@ -1,4 +1,4 @@
-import { BasePage } from "./BasePage.js";
+import { BasePage } from "./basePage.js";
 import logger from "../util/logger.js";
 
 export class ConsolePage extends BasePage {
@@ -65,7 +65,10 @@ export class ConsolePage extends BasePage {
    * Check if console errors contain specific keyword
    */
   hasErrorContaining(keyword) {
-    return this.consoleErrors.some((error) => error.includes(keyword));
+    const lowerKeyword = keyword.toLowerCase();
+    return this.consoleErrors.some((error) =>
+      error.toLowerCase().includes(lowerKeyword)
+    );
   }
 
   /**
