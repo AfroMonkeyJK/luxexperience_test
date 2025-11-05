@@ -13,7 +13,7 @@ const selectors = page => {
     loginPage: {
       usernameInput: 'input[name="username"]',
       passwordInput: 'input[name="password"]',
-      submitButton: 'button[type="submit"]',
+      submitButton: 'input[type="submit"]',
       errorMessage: ".error-message, .alert-danger",
       successIndicator: '.user-menu, .dashboard, [data-testid="user-profile"]',
     }
