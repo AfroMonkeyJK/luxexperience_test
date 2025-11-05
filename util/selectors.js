@@ -10,6 +10,9 @@ const selectors = page => {
     Button: {
       byName: buttonName => locator.byRoleButton(buttonName, true).filter({ hasText: buttonName })
     },
+    pullRequest: {
+      hoverCard: '[data-hovercard-type="pull_request"]'
+    },
     loginPage: {
       usernameInput: 'input[name="username"]',
       passwordInput: 'input[name="password"]',
