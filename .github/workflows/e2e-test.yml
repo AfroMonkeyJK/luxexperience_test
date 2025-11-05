@@ -42,6 +42,11 @@ jobs:
   e2e-tests:
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+      checks: write
     if: github.event.pull_request.draft == false || github.event_name != 'pull_request'
     steps:
       - name: 📥 Checkout code
